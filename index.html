@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Student List 2</title>
+    <title>09C-1.04.01-Student_List_1991-improved</title>
     <link rel="stylesheet" href="studentlist.css" type="text/css" />
   </head>
   <body>
@@ -14,8 +14,14 @@
         <img class="housecrest" src="" alt="" />
       </div>
     </div>
-    <div class="data_studentlist"></div>
-    <template class="data_template">
+    <div class="filterWrapper">
+      <div class="filter_Button" data-house="Gryffindor">Gryffindor</div>
+      <div class="filter_Button" data-house="Hufflepuff">Hufflepuff</div>
+      <div class="filter_Button" data-house="Ravenclaw">Ravenclaw</div>
+      <div class="filter_Button" data-house="Slytherin">Slytherin</div>
+    </div>
+    <div id="data_student"></div>
+    <template id="data_template">
       <h2></h2>
       <p></p>
     </template>

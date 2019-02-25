@@ -1,4 +1,14 @@
-body {
+.filterWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.filter_Button {
+  width: 100px;
+  height: 40px;
+}
+
+/* body {
     background-color: aliceblue;
 }
 
@@ -20,4 +30,4 @@ body {
 .slytherin {
     background-color: #588c39;
     color: #c0b1c6  
-}
+} */
