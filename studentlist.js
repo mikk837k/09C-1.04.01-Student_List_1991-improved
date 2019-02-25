@@ -4,6 +4,7 @@ window.addEventListener("DOMContentLoaded", init);
 
 let studentArray;
 const newStudentArray = [];
+let house = "all";
 
 const student = {
   fullname: "-fullname-",
@@ -31,11 +32,10 @@ function init() {
 
   // TODO: Load JSON, create clones, build list, add event listeners, show modal, find images, and other stuff ...
   getJSON();
-  let house = document.querySelectorAll(".filter_Button").forEach(button => {
-    button.addEventListener("click", getChosenHouse);
-  });
-  filterByHouse(house);
 }
+document.querySelectorAll(".filter_Button").forEach(button => {
+  button.addEventListener("click", filterByHouse);
+});
 
 async function getJSON() {
   console.log("getJSON");
@@ -55,45 +55,54 @@ function generateNewArray() {
   });
   console.log(newStudentArray);
 
-  displayStudents(newStudentArray);
+  displayStudents();
 }
 
-function displayStudents(students) {
+function filterByHouse(house) {
+  function filterHouse(newStudentArray) {
+    return newStudentArray.house === house;
+  }
+  return newStudentArray.filter(filterHouse);
+}
+
+function getChosenHouse() {
+  console.log("filter has run");
+
+  let destination = document.querySelector("#data_student");
+  destination.textContent = "";
+
+  house = this.getAttribute("data-house");
+
+  console.log(house);
+
+  displayStudents();
+}
+
+function displayStudents() {
   console.log("displayStudents");
   let destination = document.querySelector("#data_student");
   console.log(destination);
   let myTemplate = document.querySelector("#data_template");
 
-  students.forEach(student => {
-    if (student.house == house || house == "all") {
+  newStudentArray.forEach(student => {
+    if (student.house === house || house == "all") {
       console.log(myTemplate);
       let clone = myTemplate.cloneNode(true).content;
 
       // clone.querySelector("img").src = ;
-      clone.querySelector("h2").textContent = student.fullname;
+      clone.querySelectorAll("h2").innerHTML = student.fullname;
 
       destination.appendChild(clone);
     }
   });
 }
 
-function getChosenHouse() {
-  console.log("filter has run");
-
-  let house = "all";
-
-  house = this.getAttribute("data-house");
-
-  console.log(house);
-
-  return house;
-}
-function filterByHouse(chosenHouse) {
-  function filterHouse(student) {
-    return student.house === chosenHouse;
-  }
-  return newStudentArray.filter(filterHouse);
-}
+// function filterByHouse(chosenHouse) {
+//   function filterHouse(student) {
+//     return student.house === chosenHouse;
+//   }
+//   return newStudentArray.filter(filterHouse);
+// }
 
 // function showStudentInfo() {}
 
