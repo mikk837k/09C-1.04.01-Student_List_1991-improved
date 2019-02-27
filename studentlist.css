@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+  padding: 0;
+}
 .filterWrapper {
   display: flex;
   flex-direction: row;
@@ -6,6 +10,34 @@
 .filter_Button {
   width: 100px;
   height: 40px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content .filter_Button {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content .filter_Button:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
 }
 
 /* body {
@@ -31,3 +63,19 @@
     background-color: #588c39;
     color: #c0b1c6  
 } */
+
+#modal {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 1);
+  opacity: 0;
+  transition: 1s;
+  pointer-events: none;
+}
+
+#modal.show {
+  opacity: 1;
+  transition: 0.5s;
+  pointer-events: all;
+}

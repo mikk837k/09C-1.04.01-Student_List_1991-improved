@@ -7,25 +7,40 @@
     <link rel="stylesheet" href="studentlist.css" type="text/css" />
   </head>
   <body>
-    <h1>Students 1991</h1>
     <div id="modal">
       <div class="modal_content">
+        <h2></h2>
         <img class="studentphoto" src="" alt="" />
         <img class="housecrest" src="" alt="" />
       </div>
     </div>
-    <div class="filterWrapper">
-      <div class="filter_Button" data-house="all">All houses</div>
-      <div class="filter_Button" data-house="Gryffindor">Gryffindor</div>
-      <div class="filter_Button" data-house="Hufflepuff">Hufflepuff</div>
-      <div class="filter_Button" data-house="Ravenclaw">Ravenclaw</div>
-      <div class="filter_Button" data-house="Slytherin">Slytherin</div>
+    <h1>Students 1991</h1>
+    <div class="dropdown">
+      <button class="dropbtn">Filter by</button>
+      <div class="dropdown-content">
+        <div class="filter_Button" data-house="all">All houses</div>
+        <div class="filter_Button" data-house="Gryffindor">Gryffindor</div>
+        <div class="filter_Button" data-house="Hufflepuff">Hufflepuff</div>
+        <div class="filter_Button" data-house="Ravenclaw">Ravenclaw</div>
+        <div class="filter_Button" data-house="Slytherin">Slytherin</div>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn">Sort by</button>
+      <div class="dropdown-content">
+        <div class="sort_Button" data-sort="remove">Remove sorting</div>
+        <div class="sort_Button" data-sort="firstname">Firstname</div>
+        <div class="sort_Button" data-sort="lastname">Lastname</div>
+        <div class="sort_Button" data-sort="house">House</div>
+      </div>
     </div>
     <div id="data_student"></div>
     <template id="data_template">
       <h2></h2>
       <p></p>
+      <img src="" alt="" />
     </template>
     <script src="studentlist.js"></script>
+    <script src="studentDetail.js"></script>
   </body>
 </html>

@@ -3,6 +3,8 @@
 window.addEventListener("DOMContentLoaded", init);
 
 let destination = document.querySelector("#data_student");
+let chosenHouse = "all";
+let chosenSorting = "";
 
 const newStudentArray = [];
 
@@ -35,8 +37,25 @@ function init() {
 
   // TODO: add event listeners, show modal, find images, and other stuff ...
   document.querySelectorAll(".filter_Button").forEach(button => {
-    button.addEventListener("click", filterList);
+    button.addEventListener("click", getChosenHouse);
   });
+
+  document.querySelectorAll(".sort_Button").forEach(button => {
+    button.addEventListener("click", getChosenSorting);
+  });
+
+  function getChosenHouse() {
+    console.log("getChosenHouse");
+    chosenHouse = this.dataset.house;
+    filterList(chosenHouse);
+  }
+
+  function getChosenSorting() {
+    console.log("getSortType");
+    chosenSorting = this.dataset.sort;
+
+    filterList(chosenHouse);
+  }
 
   getJSON();
 }
@@ -63,33 +82,70 @@ function generateNewArray(studentArray) {
 }
 
 // Create a filter that only filters the list nothing more
-function filterList() {
+function filterList(chosenHouse) {
   console.log("filterList");
-  const filterHouse = this.dataset.house;
 
-  if (filterHouse == "all") {
-    displayStudents(newStudentArray);
+  if (chosenHouse == "all") {
+    sortList(chosenSorting, newStudentArray);
   } else {
-    const filtered = filterByHouse(filterHouse);
-    displayStudents(filtered);
+    const filteredList = filterByHouse(chosenHouse);
+    sortList(chosenSorting, filteredList);
   }
 }
 
 function filterByHouse(house) {
   console.log("filterByHouse  ");
-  function filterHouse(student) {
+  function chosenHouse(student) {
     return student.house === house;
   }
-  return newStudentArray.filter(filterHouse);
-  sortList();
+  return newStudentArray.filter(chosenHouse);
 }
 
-// Create a sort filter that only sorts the list
-function sortList() {}
-// TODO: create a function that only generates
+function sortList(chosenSorting, list) {
+  console.log("sortList");
+
+  let sorted;
+  if (chosenSorting === "") {
+    sorted = list;
+  }
+  if (chosenSorting == "firstname") {
+    sorted = list.sort(sortByFirstname);
+  } else if (chosenSorting == "lastname") {
+    sorted = list.sort(sortByLastname);
+  } else {
+    sorted = list.sort(sortByHouse);
+  }
+  displayStudents(sorted);
+}
+
+function sortByFirstname(a, b) {
+  // console.log("sortByFirstname");
+  if (a.firstname < b.firstname) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+function sortByLastname(a, b) {
+  // console.log("sortByLastname");
+  if (a.lastname < b.lastname) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+function sortByHouse(a, b) {
+  // console.log("sortByHouse");
+  if (a.house < b.house) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
 
 function displayStudents(list) {
   console.log("displayStudents");
+
   destination.textContent = "";
 
   list.forEach(displayStudent);
@@ -102,6 +158,8 @@ function displayStudent(student) {
 
   let clone = myTemplate.cloneNode(true).content;
   clone.querySelector("h2").textContent = student.fullname;
+  clone.querySelector("p").textContent = student.house;
+  clone.querySelector("img").src = "image/" + student.imagename;
 
   destination.appendChild(clone);
 }
