@@ -7,6 +7,11 @@ body {
   flex-direction: row;
 }
 
+#buttonWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
 .filter_Button {
   width: 100px;
   height: 40px;
@@ -42,33 +47,33 @@ body {
 
 /* body {
     background-color: aliceblue;
-}
+} */
 
 .gryffindor {
-    background-color: #ce3a0a;
-    color: #fdb02e
+  background-color: #ce3a0a;
+  color: #fdb02e;
 }
 
 .hufflepuff {
-    background-color: #ffc02a;
-    color: #0b0000  
+  background-color: #ffc02a;
+  color: #0b0000;
 }
 
 .ravenclaw {
-    background-color: #395f9d;
-    color: #e9ba36  
+  background-color: #395f9d;
+  color: #e9ba36;
 }
 
 .slytherin {
-    background-color: #588c39;
-    color: #c0b1c6  
-} */
+  background-color: #588c39;
+  color: #c0b1c6;
+}
 
 #modal {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background-color: rgba(0, 0, 0, 1);
+  background-color: rgb(248, 247, 247);
   opacity: 0;
   transition: 1s;
   pointer-events: none;

@@ -5,8 +5,10 @@ window.addEventListener("DOMContentLoaded", init);
 let destination = document.querySelector("#data_student");
 let chosenHouse = "all";
 let chosenSorting = "";
+let houseColor;
 
 const newStudentArray = [];
+let expelledStudents = [];
 
 const Student = {
   fullname: "-fullname-",
@@ -44,6 +46,8 @@ function init() {
     button.addEventListener("click", getChosenSorting);
   });
 
+  destination.addEventListener("click", clickStudentList);
+
   function getChosenHouse() {
     console.log("getChosenHouse");
     chosenHouse = this.dataset.house;
@@ -64,6 +68,10 @@ async function getJSON() {
   console.log("getJSON");
   let myJSON = await fetch("http://petlatkea.dk/2019/hogwarts/students.json");
   const studentArray = await myJSON.json();
+  let familiesData = await fetch(
+    "http://petlatkea.dk/2019/hogwarts/students.json"
+  );
+  const familyData = await familiesData.json();
 
   generateNewArray(studentArray);
 }
@@ -75,6 +83,9 @@ function generateNewArray(studentArray) {
 
     newStudent.setJSONData(studentData);
     newStudentArray.push(newStudent);
+  });
+  newStudentArray.forEach(object => {
+    object.uniqueID = uuidv4();
   });
   console.log(newStudentArray);
   // filterByHouse(newStudentArray);
@@ -143,6 +154,35 @@ function sortByHouse(a, b) {
   }
 }
 
+function clickStudentList(event) {
+  console.log("clickList kørt");
+
+  let whichButton = event.target.dataset.action;
+  console.log(whichButton);
+
+  if (whichButton === "expel") {
+    event.preventDefault();
+    clickRemove(event);
+  }
+}
+
+function clickRemove(event) {
+  console.log("clickRemove");
+
+  let selectedStudent = event.target.dataset.id;
+  console.log(selectedStudent);
+
+  const expelStudent = newStudentArray.splice(
+    newStudentArray.findIndex(obj => obj.uniqueID === selectedStudent),
+    1
+  );
+  expelledStudents.push(expelStudent);
+
+  displayStudents();
+}
+
+// Everything below this line is showing something visual
+
 function displayStudents(list) {
   console.log("displayStudents");
 
@@ -158,8 +198,52 @@ function displayStudent(student) {
 
   let clone = myTemplate.cloneNode(true).content;
   clone.querySelector("h2").textContent = student.fullname;
+  clone.querySelector("h2").addEventListener("click", () => {
+    showModal(student);
+  });
   clone.querySelector("p").textContent = student.house;
-  clone.querySelector("img").src = "image/" + student.imagename;
+  clone.querySelector("button").dataset.id = student.uniqueID;
 
   destination.appendChild(clone);
+}
+
+function showModal(student) {
+  console.log("showModal");
+  const modal = document.querySelector("#modal");
+  modal.classList.add("show");
+
+  houseColor = student.house.toLowerCase();
+  console.log(houseColor);
+  document.querySelector(".modal_content").classList.add(houseColor);
+
+  modal.querySelector(".firstname").innerHTML = `Firstname: ${
+    student.firstname
+  }`;
+  modal.querySelector(".lastname").innerHTML = `Lastname: ${student.lastname}`;
+
+  modal.querySelector(".studentphoto").src = `${student.imagename}.png`;
+  modal.querySelector(".studentphoto").alt = `Student photo of ${
+    student.fullname
+  } from the house ${student.house}`;
+
+  modal.querySelector(".housecrest").src = `img/${houseColor}.png`;
+  modal.querySelector(".housecrest").alt = `Crest of the house ${
+    student.house
+  }`;
+
+  modal.querySelector("div").addEventListener("click", hideModal);
+}
+
+function hideModal() {
+  modal.classList.remove("show");
+  document.querySelector(".modal_content").classList.remove(houseColor);
+}
+
+// Create an universal unique id --> Copied code from Stackoverflow: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+function uuidv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
