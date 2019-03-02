@@ -33,6 +33,7 @@ const Student = {
     this.imagename = `images/${lastnameLower}_${firstletterLower}`;
     this.house = studentData.house;
     this.blood_status = studentData.blood_status;
+    this.inquisitorialSquad = false;
   }
 };
 
@@ -134,7 +135,7 @@ function siteClicked(event) {
   if (action === "inquisitorial_squad") {
     event.preventDefault();
     inquisitorialS = action;
-    appointToIInquisitorialSquad(event);
+    getInquisitorialSquadCompatibility(event);
   }
 }
 
@@ -183,7 +184,7 @@ function expelStudent(event) {
   filterList(chosenFilter);
 }
 
-function appointToIInquisitorialSquad(event) {
+function getInquisitorialSquadCompatibility(event) {
   const studentID = event.target.dataset.id;
 
   console.log(studentID);
@@ -191,12 +192,28 @@ function appointToIInquisitorialSquad(event) {
   const appointStudent = studentlist.find(obj => obj.uniqueID === studentID);
 
   console.log(appointStudent);
+  if (
+    appointStudent.blood_status === "Pure-blood" ||
+    appointStudent.house === "Slytherin"
+  ) {
+    appointToInquisitorialSquad(appointStudent);
+  } else {
+    alert("Not Allowed!");
+  }
+}
 
-  //   appointStudent.inquisitorialSquad = "True";
-
-  console.log(studentID);
-
-  //   filterList(chosenFilter);
+function appointToInquisitorialSquad(appointStudent) {
+  console.log("appointToIInquisitorialSquad");
+  document.querySelector("[data-action=inquisitorial_squad]").textContent = "";
+  if (appointStudent.inquisitorialSquad === false) {
+    appointStudent.inquisitorialSquad = true;
+    document.querySelector("[data-action=inquisitorial_squad]").textContent =
+      "Remove from IS";
+  } else {
+    appointStudent.inquisitorialSquad = false;
+    document.querySelector("[data-action=inquisitorial_squad]").textContent =
+      "Appoint to IS";
+  }
 }
 
 // update counters
@@ -314,6 +331,7 @@ function openStudentDetails(student) {
   modal.querySelector("[data-field=firstname]").innerHTML = `Firstname: ${
     student.firstname
   }`;
+  modal.querySelector("button").dataset.id = student.uniqueID;
   modal.querySelector("div").addEventListener("click", closeStudentDetails);
 }
 
